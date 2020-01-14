@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PO-sklep", "PO-sklep\PO-sklep.csproj", "{C859AC83-065F-430C-B1A3-09A826B73DF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PO-sklep.Tests.Unit", "PO-sklep.Tests.Unit\PO-sklep.Tests.Unit.csproj", "{BFBD6E09-9E45-4D62-BDDB-149D799C6487}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C859AC83-065F-430C-B1A3-09A826B73DF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C859AC83-065F-430C-B1A3-09A826B73DF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C859AC83-065F-430C-B1A3-09A826B73DF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C859AC83-065F-430C-B1A3-09A826B73DF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFBD6E09-9E45-4D62-BDDB-149D799C6487}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFBD6E09-9E45-4D62-BDDB-149D799C6487}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFBD6E09-9E45-4D62-BDDB-149D799C6487}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFBD6E09-9E45-4D62-BDDB-149D799C6487}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7A73C516-B7FA-4A12-9362-CA3939790914}
+	EndGlobalSection
+EndGlobal
