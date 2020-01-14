@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace PO_sklep.Models
+﻿namespace PO_sklep.Models
 {
-    public partial class Pracownik
+    public class Pracownik : IEntity
     {
         public int IdPracownika { get; set; }
         public string ImiePracownika { get; set; }
@@ -12,8 +9,8 @@ namespace PO_sklep.Models
         public int IdKonta { get; set; }
         public int? IdKategorii { get; set; }
 
-        public virtual Kategoria IdKategoriiNavigation { get; set; }
-        public virtual Konto IdKontaNavigation { get; set; }
-        public virtual Stanowisko IdStanowiskaNavigation { get; set; }
+        public Kategoria Kategoria { get; set; }
+        public Konto Konto { get; set; }
+        public Stanowisko Stanowisko { get; set; }
     }
 }

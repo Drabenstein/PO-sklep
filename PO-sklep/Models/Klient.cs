@@ -1,26 +1,24 @@
-﻿using System;
+﻿using Dapper.Contrib.Extensions;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PO_sklep.Models
 {
-    public partial class Klient
+    public class Klient : IEntity
     {
-        public Klient()
-        {
-            Opinia = new HashSet<Opinia>();
-            Zamowienie = new HashSet<Zamowienie>();
-        }
-
+        [Key]
         public int IdKlienta { get; set; }
         public string ImieKlienta { get; set; }
         public string NazwiskoKlienta { get; set; }
         public string Email { get; set; }
         public string Adres { get; set; }
         public DateTime? DataUrodzenia { get; set; }
+        [ExplicitKey]
         public int? IdKonta { get; set; }
 
-        public virtual Konto IdKontaNavigation { get; set; }
-        public virtual ICollection<Opinia> Opinia { get; set; }
-        public virtual ICollection<Zamowienie> Zamowienie { get; set; }
+        public Konto Konto { get; set; }
+        public IList<Opinia> Opinie { get; set; }
+        public IList<Zamowienie> Zamowienia { get; set; }
     }
 }

@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 namespace PO_sklep.Extensions
 {
-    public static class ProductDTOExtensions
+    public static class ProductDtoExtensions
     {
         private static string _productImagesPath => "https://localhost:5001/images/products";
 
-        public static IEnumerable<ProductDTO> UpdateImageUrls(this IEnumerable<ProductDTO> products)
+        public static IEnumerable<ProductDto> UpdateImageUrls(this IEnumerable<ProductDto> products)
         {
             if (products is null)
             {
@@ -23,7 +23,7 @@ namespace PO_sklep.Extensions
             return products;
         }
 
-        public static ProductDTO UpdateImageUrl(this ProductDTO product)
+        public static ProductDto UpdateImageUrl(this ProductDto product)
         {
             product.ImageUrl = $"{_productImagesPath}/8.jpg";
             return product;

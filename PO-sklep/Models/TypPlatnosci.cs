@@ -3,16 +3,11 @@ using System.Collections.Generic;
 
 namespace PO_sklep.Models
 {
-    public partial class TypPlatnosci
+    public class TypPlatnosci : IEntity
     {
-        public TypPlatnosci()
-        {
-            Platnosc = new HashSet<Platnosc>();
-        }
-
         public int IdTypuPlatnosci { get; set; }
         public string NazwaTypuPlatnosci { get; set; }
 
-        public virtual ICollection<Platnosc> Platnosc { get; set; }
+        public IList<Platnosc> Platnosci { get; set; }
     }
 }

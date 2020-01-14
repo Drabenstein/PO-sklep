@@ -1,13 +1,11 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using PO_sklep.Models;
+using PO_sklep.Helpers;
 using PO_sklep.Repositories.Implementations;
-using PO_sklep.Repositories.Interfaces;
 using PO_sklep.Services.Implementations;
 using PO_sklep.Services.Interfaces;
 
@@ -24,9 +22,6 @@ namespace PO_sklep
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<POsklepContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("PO-sklep-ef")));
-
             services.AddCors(options =>
                 options.AddPolicy("CorsPolicy",
                                   builder => builder.WithOrigins("http://localhost:4200")
@@ -34,9 +29,14 @@ namespace PO_sklep
                                                     .AllowAnyHeader()
                                                     .AllowCredentials()));
 
+            //SqlMapperInitializer.InitializeColumnMappings();
+            Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddSingleton(new ConnectionConfig(Configuration.GetConnectionString("PO-sklep-ef")));
+
+            services.AddScoped<ProductRepository, ProductRepository>();
 
             services.AddScoped<IProductService, ProductService>();
 

@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace PO_sklep.Models
+﻿namespace PO_sklep.Models
 {
-    public partial class ZamowienieProdukt
+    public class ZamowienieProdukt : IEntity
     {
         public int IdProduktu { get; set; }
         public int IdZamowienia { get; set; }
         public int? Ilosc { get; set; }
 
-        public virtual Produkt IdProduktuNavigation { get; set; }
-        public virtual Zamowienie IdZamowieniaNavigation { get; set; }
+        public Produkt Produkt { get; set; }
+        public Zamowienie Zamowienie { get; set; }
     }
 }

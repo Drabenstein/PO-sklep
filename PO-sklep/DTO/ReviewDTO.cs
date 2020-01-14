@@ -2,7 +2,7 @@
 
 namespace PO_sklep.DTO
 {
-    public class ReviewDTO
+    public class ReviewDto
     {
         [Required]
         public string Author { get; set; }
