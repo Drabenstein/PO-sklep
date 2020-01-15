@@ -8,7 +8,7 @@ namespace PO_sklep.Repositories.Interfaces
 {
     public abstract class GenericRepositoryBase<T> where T : class
     {
-        protected ConnectionConfig _connectionConfig;
+        private readonly ConnectionConfig _connectionConfig;
 
         protected GenericRepositoryBase(ConnectionConfig connectionConfig)
         {
@@ -22,7 +22,7 @@ namespace PO_sklep.Repositories.Interfaces
                 throw new ArgumentNullException(nameof(query));
             }
 
-            using var connection = new SqlConnection(_connectionConfig.ConnectionString);
+            using var connection = CreateConnection();
             await query.Invoke(connection).ConfigureAwait(false);
 
         }
@@ -34,8 +34,13 @@ namespace PO_sklep.Repositories.Interfaces
                 throw new ArgumentNullException(nameof(query));
             }
 
-            using var connection = new SqlConnection(_connectionConfig.ConnectionString);
+            using var connection = CreateConnection();
             return await query.Invoke(connection);
+        }
+
+        protected IDbConnection CreateConnection()
+        {
+            return new SqlConnection(_connectionConfig.ConnectionString);
         }
     }
 }

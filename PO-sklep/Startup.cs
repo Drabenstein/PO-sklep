@@ -29,8 +29,8 @@ namespace PO_sklep
                                                     .AllowAnyHeader()
                                                     .AllowCredentials()));
 
-            //SqlMapperInitializer.InitializeColumnMappings();
-            Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+            //Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+            SqlMapperInitializer.InitializeColumnMappings();
 
             services.AddAutoMapper(typeof(Startup));
 

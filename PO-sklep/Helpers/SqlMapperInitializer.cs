@@ -12,7 +12,7 @@ namespace PO_sklep.Helpers
             var currentAssembly = typeof(SqlMapperInitializer).Assembly;
             var entityTypes = currentAssembly
                 .DefinedTypes
-                .Where(type => type.IsClass && !type.IsAbstract && type.IsSubclassOf(typeof(IEntity)))
+                .Where(type => type.ImplementedInterfaces.Contains(typeof(IEntity)))
                 .ToList();
 
             foreach (var entityType in entityTypes)

@@ -31,68 +31,35 @@ namespace PO_sklep.Services.Implementations
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task AddReviewAsync(int productId, ReviewDto newReview)
+        public async Task<int?> AddReviewAsync(int productId, ReviewDto newReview)
         {
-            //var product = await _productRepository.GetAsync(productId);
-            //var client = await _clientRepository.FindAsync(x => x.Email == newReview.Author.ToLower());
+            var product = await _productRepository.GetByIdAsync(productId);
 
-            //if (client is null)
-            //{
-            //    client = await _clientRepository.AddAsync(new Klient
-            //    {
-            //        ImieKlienta = newReview.Author.ToLower(),
-            //        NazwiskoKlienta = newReview.Author.ToLower(),
-            //        Email = newReview.Author.ToLower()
-            //    });
-            //}
+            if (product is null)
+            {
+                return null;
+            }
 
-            //var review = _mapper.Map<Opinia>(newReview);
-            //review.IdKlienta = client.IdKlienta;
-            //product.Opinia.Add(review);
-            //await _productRepository.SaveAsync();
+            string email = newReview.Author;
+            return await _productRepository.AddProductReviewAsync(productId, email, newReview.Rating, newReview.Comment, false);
         }
 
         public async Task<IEnumerable<ProductDto>> GetAllProductsAsync()
         {
-            //var products = await _productRepository.GetAllAsync();
-            //var reviews = await _reviewRepository.GetAllAsync();
-            //var clients = await _clientRepository.GetAllAsync();
-            //reviews = reviews.Select(op =>
-            //{
-            //    op.IdKlientaNavigation = clients.FirstOrDefault(k => k.IdKlienta == op.IdKlienta);
-            //    return op;
-            //}).ToList();
-
-            //products = products.Select(p =>
-            //{
-            //    p.Opinia = reviews.Where(r => r.IdProduktu == p.IdProduktu).ToList();
-            //    return p;
-            //}).ToList();
-
-            var products = await _productRepository.GetAllAsync();
+            var products = await _productRepository.GetAllAsync().ConfigureAwait(false);
             return _mapper.Map<IEnumerable<ProductDto>>(products)?.UpdateImageUrls();
         }
 
         public async Task<ProductDto> GetProductByIdAsync(int id)
         {
-            //await _productRepository.AddAsync(new Produkt
-            //{
-            //    Producent = "Bosch",
-            //    NazwaProduktu = "Pralka dasda321",
-            //    CenaNetto = 1299.00m,
-            //    Vat = 23,
-            //    IdKategorii = 2
-            //});
-            //var product = await _productRepository.FindAsync(p => p.IdProduktu == id);
-            //return _mapper.Map<ProductDTO>(product)?.UpdateImageUrl();
-            return await Task.FromResult((ProductDto)null);
+            var product = await _productRepository.GetByIdAsync(id).ConfigureAwait(false);
+            return _mapper.Map<ProductDto>(product).UpdateImageUrl();
         }
 
         public async Task<IEnumerable<ProductDto>> GetProductsByCategoryId(int categoryId)
         {
-            //var products = await _productRepository.FindAllAsync(product => product.IdKategorii == categoryId);
-            //return _mapper.Map<IEnumerable<ProductDTO>>(products)?.UpdateImageUrls();
-            return await Task.FromResult((IEnumerable<ProductDto>)new List<ProductDto>());
+            var products = await _productRepository.GetByCategoryIdAsync(categoryId).ConfigureAwait(false);
+            return _mapper.Map<IEnumerable<ProductDto>>(products)?.UpdateImageUrls();
         }
     }
 }

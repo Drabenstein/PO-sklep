@@ -4,10 +4,8 @@ using PO_sklep.Helpers;
 using PO_sklep.Services.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace PO_sklep.Controllers
 {
@@ -31,38 +29,34 @@ namespace PO_sklep.Controllers
         [ExactQueryParam("id")]
         public async Task<ActionResult<ProductDto>> Get([FromQuery]int id)
         {
-            //var foundItem = await _productService.GetProductByIdAsync(id);
+            var foundItem = await _productService.GetProductByIdAsync(id);
 
-            //if (foundItem is null)
-            //{
-            //    return NotFound();
-            //}
+            if (foundItem is null)
+            {
+                return NotFound();
+            }
 
-            //return foundItem;
-            var foundProducts = await _productService.GetAllProductsAsync();
-            return foundProducts.First();
+            return foundItem;
         }
 
         [HttpGet]
         [ExactQueryParam("categoryId")]
         public async Task<IEnumerable<ProductDto>> GetByCategory([FromQuery]int categoryId)
         {
-            //var foundProducts = await _productService.GetProductsByCategoryId(categoryId);
-            var foundProducts = await _productService.GetAllProductsAsync();
+            var foundProducts = await _productService.GetProductsByCategoryId(categoryId);
             return foundProducts;
         }
 
         [HttpPost("{id}/addReview")]
         public async Task<ActionResult> CreateReview(int id, [FromBody]ReviewDto review)
         {
-            var product = await _productService.GetProductByIdAsync(id);
+            var newReviewId = await _productService.AddReviewAsync(id, review);
 
-            if (product is null)
+            if (newReviewId is null)
             {
-                return NotFound();
+                return BadRequest();
             }
 
-            await _productService.AddReviewAsync(id, review);
             return Ok();
         }
     }
