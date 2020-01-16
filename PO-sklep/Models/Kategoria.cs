@@ -11,6 +11,6 @@ namespace PO_sklep.Models
         public Kategoria Nadkategoria { get; set; }
         public IList<Kategoria> Podkategorie { get; set; }
         public IList<Pracownik> Pracownicy { get; set; }
-        public IList<Produkt> Produkty { get; set; }
+        public IList<Product> Produkty { get; set; }
     }
 }

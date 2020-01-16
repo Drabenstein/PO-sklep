@@ -5,27 +5,27 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PO_sklep.Models
 {
-    public class Klient : IEntity
+    public class Client : IEntity
     {
         [Key]
         [Column("Id_klienta")]
-        public int IdKlienta { get; set; }
+        public int ClientId { get; set; }
         [Column("Imie_klienta")]
-        public string ImieKlienta { get; set; }
+        public string Name { get; set; }
         [Column("Nazwisko_klienta")]
-        public string NazwiskoKlienta { get; set; }
+        public string Surname { get; set; }
         [Column("Email")]
         public string Email { get; set; }
         [Column("Adres")]
-        public string Adres { get; set; }
+        public string Address { get; set; }
         [Column("Data_urodzenia")]
-        public DateTime? DataUrodzenia { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         [ExplicitKey]
         [Column("Id_konta")]
-        public int? IdKonta { get; set; }
+        public int? AccountId { get; set; }
 
-        public Konto Konto { get; set; }
-        public IList<Opinia> Opinie { get; set; }
-        public IList<Zamowienie> Zamowienia { get; set; }
+        public Konto Account { get; set; }
+        public IList<Review> Reviews { get; set; }
+        public IList<Zamowienie> Orders { get; set; }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PO_sklep.Models
 {
-    public class Platnosc : IEntity
+    public class Payment : IEntity
     {
         public int IdPlatnosci { get; set; }
         public DateTime DataPlatnosci { get; set; }

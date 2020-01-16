@@ -5,24 +5,24 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PO_sklep.Models
 {
-    public class Produkt : IEntity
+    public class Product : IEntity
     {
         [Key]
         [Column("Id_produktu")]
-        public int IdProduktu { get; set; }
+        public int ProductId { get; set; }
         [Column("Producent")]
-        public string Producent { get; set; }
+        public string ProducerName { get; set; }
         [Column("Nazwa_produktu")]
-        public string NazwaProduktu { get; set; }
+        public string ProductName { get; set; }
         [Column("Opis")]
-        public string Opis { get; set; }
+        public string Description { get; set; }
         [Column("Cena_netto")]
-        public decimal CenaNetto { get; set; }
+        public decimal NetPrice { get; set; }
         [Column("VAT")]
         public byte Vat { get; set; }
         [ExplicitKey]
         [Column("Id_kategorii")]
-        public int IdKategorii { get; set; }
-        public IList<Opinia> Opinie { get; set; }
+        public int CategoryId { get; set; }
+        public IList<Review> Reviews { get; set; }
     }
 }

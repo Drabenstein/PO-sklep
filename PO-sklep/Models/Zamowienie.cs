@@ -25,8 +25,8 @@ namespace PO_sklep.Models
         [Column("Id_klienta")]
         public int IdKlienta { get; set; }
 
-        public Klient Klient { get; set; }
-        public Platnosc Platnosc { get; set; }
+        public Client Klient { get; set; }
+        public Payment Platnosc { get; set; }
         public SposobDostawy SposobDostawy { get; set; }
         public StatusZamowienia StatusZamowienia { get; set; }
         public Faktura Faktura { get; set; }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PO_sklep.Repositories.Implementations
 {
-    public class ProductRepository : GenericRepositoryBase<Produkt>, IProductRepository
+    public class ProductRepository : GenericRepositoryBase<Product>, IProductRepository
     {
         private const string GetAllProductsUsp = "uspGetAllProducts";
         private const string GetProductsByCategoryUsp = "uspGetProductsByCategory";
@@ -19,46 +19,46 @@ namespace PO_sklep.Repositories.Implementations
         {
         }
 
-        public async Task<IEnumerable<Produkt>> GetAllAsync()
+        public async Task<IEnumerable<Product>> GetAllAsync()
         {
             return await QueryAsync(async db =>
             {
-                var productDictionary = new Dictionary<int, Produkt>();
+                var productDictionary = new Dictionary<int, Product>();
 
-                var products = await db.QueryAsync<Produkt, Opinia, Klient, Produkt>(GetAllProductsUsp,
+                var products = await db.QueryAsync<Product, Review, Client, Product>(GetAllProductsUsp,
                     (product, review, client) => MapProductWithReviews(productDictionary, product, review, client),
                     splitOn: "Id_opinii, Id_klienta",
                     commandType: System.Data.CommandType.StoredProcedure);
-                return products.ToList();
+                return products.Distinct().ToList();
             }).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<Produkt>> GetByCategoryIdAsync(int categoryId)
+        public async Task<IEnumerable<Product>> GetByCategoryIdAsync(int categoryId)
         {
             return await QueryAsync(async db =>
             {
-                var productDictionary = new Dictionary<int, Produkt>();
+                var productDictionary = new Dictionary<int, Product>();
 
                 var param = new DynamicParameters();
                 param.Add("@Id_kategorii", categoryId);
-                var products = await db.QueryAsync<Produkt, Opinia, Klient, Produkt>(GetProductsByCategoryUsp,
+                var products = await db.QueryAsync<Product, Review, Client, Product>(GetProductsByCategoryUsp,
                     (product, review, client) => MapProductWithReviews(productDictionary, product, review, client),
                     param,
                     splitOn: "Id_opinii, Id_klienta",
                     commandType: System.Data.CommandType.StoredProcedure).ConfigureAwait(false);
-                return products.ToList();
+                return products.Distinct().ToList();
             }).ConfigureAwait(false);
         }
 
-        public async Task<Produkt> GetByIdAsync(int id)
+        public async Task<Product> GetByIdAsync(int id)
         {
             return await QueryAsync(async db =>
             {
-                var productDictionary = new Dictionary<int, Produkt>();
+                var productDictionary = new Dictionary<int, Product>();
 
                 var param = new DynamicParameters();
                 param.Add("@Id_produktu", id);
-                var products = await db.QueryAsync<Produkt, Opinia, Klient, Produkt>(GetProductByIdUsp,
+                var products = await db.QueryAsync<Product, Review, Client, Product>(GetProductByIdUsp,
                     (product, review, client) => MapProductWithReviews(productDictionary, product, review, client),
                     param,
                     splitOn: "Id_opinii, Id_klienta",
@@ -93,23 +93,23 @@ namespace PO_sklep.Repositories.Implementations
             });
         }
 
-        private Produkt MapProductWithReviews(IDictionary<int, Produkt> productDictionary, Produkt product, Opinia review, Klient client)
+        private Product MapProductWithReviews(IDictionary<int, Product> productDictionary, Product product, Review review, Client client)
         {
             if (client?.Email is { })
             {
-                review.Klient = client;
+                review.Client = client;
             }
 
-            if (!productDictionary.TryGetValue(product.IdProduktu, out var productEntry))
+            if (!productDictionary.TryGetValue(product.ProductId, out var productEntry))
             {
                 productEntry = product;
-                productEntry.Opinie = new List<Opinia>();
-                productDictionary.Add(productEntry.IdProduktu, productEntry);
+                productEntry.Reviews = new List<Review>();
+                productDictionary.Add(productEntry.ProductId, productEntry);
             }
 
-            if (review?.Klient is { })
+            if (review?.Client is { })
             {
-                productEntry.Opinie.Add(review);
+                productEntry.Reviews.Add(review);
             }
             return productEntry;
         }

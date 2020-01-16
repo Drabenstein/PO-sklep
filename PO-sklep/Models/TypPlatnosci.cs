@@ -8,6 +8,6 @@ namespace PO_sklep.Models
         public int IdTypuPlatnosci { get; set; }
         public string NazwaTypuPlatnosci { get; set; }
 
-        public IList<Platnosc> Platnosci { get; set; }
+        public IList<Payment> Platnosci { get; set; }
     }
 }

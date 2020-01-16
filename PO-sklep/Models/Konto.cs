@@ -7,7 +7,7 @@
         public string Login { get; set; }
         public string Haslo { get; set; }
 
-        public Klient Klient { get; set; }
+        public Client Klient { get; set; }
         public Pracownik Pracownik { get; set; }
     }
 }

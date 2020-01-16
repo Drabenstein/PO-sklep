@@ -8,7 +8,7 @@ namespace PO_sklep.Repositories.Interfaces
     {
         Task<int> CreateClientAsync(string name, string surname, string email, string address, DateTime? birthday);
         Task<int> CreateClientAsync(string email);
-        Task<Klient> GetClientById(int clientId);
-        Task<Klient> GetClientByEmail(string email);
+        Task<Client> GetClientById(int clientId);
+        Task<Client> GetClientByEmail(string email);
     }
 }

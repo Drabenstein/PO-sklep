@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PO_sklep.Repositories.Implementations
 {
-    public class ClientRepository : GenericRepositoryBase<Klient>, IClientRepository
+    public class ClientRepository : GenericRepositoryBase<Client>, IClientRepository
     {
         private const string AddClientUsp = "uspAddClient";
         private const string AddClientByEmailUsp = "uspAddClientByEmail";
@@ -87,7 +87,7 @@ namespace PO_sklep.Repositories.Implementations
             }
         }
 
-        public async Task<Klient> GetClientByEmail(string email)
+        public async Task<Client> GetClientByEmail(string email)
         {
             if(string.IsNullOrWhiteSpace(email))
             {
@@ -97,22 +97,22 @@ namespace PO_sklep.Repositories.Implementations
             var param = new DynamicParameters();
             param.Add("@Email", email);
 
-            return await QueryAsync<Klient>(async db =>
+            return await QueryAsync<Client>(async db =>
             {
-                return await db.QueryFirstOrDefaultAsync<Klient>(GetClientByEmailUsp,
+                return await db.QueryFirstOrDefaultAsync<Client>(GetClientByEmailUsp,
                     param,
                     commandType: System.Data.CommandType.StoredProcedure);
             });
         }
 
-        public async Task<Klient> GetClientById(int clientId)
+        public async Task<Client> GetClientById(int clientId)
         {
             var param = new DynamicParameters();
             param.Add("@Id_klienta", clientId);
 
-            return await QueryAsync<Klient>(async db =>
+            return await QueryAsync<Client>(async db =>
             {
-                return await db.QueryFirstOrDefaultAsync<Klient>(GetClientByIdUsp,
+                return await db.QueryFirstOrDefaultAsync<Client>(GetClientByIdUsp,
                     param,
                     commandType: System.Data.CommandType.StoredProcedure);
             });

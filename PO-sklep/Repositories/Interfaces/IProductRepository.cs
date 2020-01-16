@@ -6,9 +6,9 @@ namespace PO_sklep.Repositories.Interfaces
 {
     public interface IProductRepository
     {
-        Task<IEnumerable<Produkt>> GetAllAsync();
-        Task<IEnumerable<Produkt>> GetByCategoryIdAsync(int categoryId);
-        Task<Produkt> GetByIdAsync(int id);
+        Task<IEnumerable<Product>> GetAllAsync();
+        Task<IEnumerable<Product>> GetByCategoryIdAsync(int categoryId);
+        Task<Product> GetByIdAsync(int id);
         Task<int> AddProductReviewAsync(int id, string authorEmail, int rating, string comment, bool? isBuyerReview);
     }
 }

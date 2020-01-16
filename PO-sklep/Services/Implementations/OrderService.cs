@@ -54,7 +54,7 @@ namespace PO_sklep.Services.Implementations
             var client = await _clientRepository.GetClientByEmail(clientEmail);
             int clientId = client is null
                 ? await _clientRepository.CreateClientAsync(clientEmail)
-                : client.IdKlienta;
+                : client.ClientId;
             return await CreateOrderAsync(clientId, order);
         }
     }
