@@ -10,19 +10,19 @@ using System.Threading.Tasks;
 
 namespace PO_sklep.Repositories.Implementations
 {
-    public class OrderRepository : GenericRepositoryBase<Zamowienie>, IOrderRepository
+    public class OrderRepository : GenericRepositoryBase<Order>, IOrderRepository
     {
         private const string SubmitOrderUsp = "uspSubmitOrder";
 
         public OrderRepository(ConnectionConfig connectionConfig) : base(connectionConfig) { }
 
-        public async Task<int> CreateOrderAsync(int clientId, int deliveryMethodId, IEnumerable<ZamowienieProdukt> orderItems)
+        public async Task<int> CreateOrderAsync(int clientId, int deliveryMethodId, IEnumerable<OrderItem> orderItems)
         {
             var param = CreateParameters(clientId, deliveryMethodId, null, orderItems);
             return await CreateOrderHelperAsync(param);
         }
 
-        public async Task<int> CreateOrderAsync(int clientId, int deliveryMethodId, int paymentTypeId, IEnumerable<ZamowienieProdukt> orderItems)
+        public async Task<int> CreateOrderAsync(int clientId, int deliveryMethodId, int paymentTypeId, IEnumerable<OrderItem> orderItems)
         {
             var param = CreateParameters(clientId, deliveryMethodId, paymentTypeId, orderItems);
             return await CreateOrderHelperAsync(param);
@@ -47,7 +47,7 @@ namespace PO_sklep.Repositories.Implementations
             }
         }
 
-        private DynamicParameters CreateParameters(int clientId, int deliveryMethodId, int? paymentTypeId, IEnumerable<ZamowienieProdukt> orderItems)
+        private DynamicParameters CreateParameters(int clientId, int deliveryMethodId, int? paymentTypeId, IEnumerable<OrderItem> orderItems)
         {
             var param = new DynamicParameters();
             param.Add("@Id_klienta", clientId);
@@ -64,7 +64,7 @@ namespace PO_sklep.Repositories.Implementations
 
             foreach(var orderItem in orderItems)
             {
-                dt.Rows.Add(orderItem.IdProduktu, orderItem.Ilosc);
+                dt.Rows.Add(orderItem.ProductId, orderItem.Count);
             }
 
             param.Add("@Lista", dt.AsTableValuedParameter());

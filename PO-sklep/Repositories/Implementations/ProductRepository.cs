@@ -100,11 +100,11 @@ namespace PO_sklep.Repositories.Implementations
                 review.Client = client;
             }
 
-            if (!productDictionary.TryGetValue(product.ProductId, out var productEntry))
+            if (!productDictionary.TryGetValue(product.Id, out var productEntry))
             {
                 productEntry = product;
                 productEntry.Reviews = new List<Review>();
-                productDictionary.Add(productEntry.ProductId, productEntry);
+                productDictionary.Add(productEntry.Id, productEntry);
             }
 
             if (review?.Client is { })

@@ -7,7 +7,7 @@ namespace PO_sklep.Models
     {
         [Key]
         [Column("Id_opinii")]
-        public int ReviewId { get; set; }
+        public int Id { get; set; }
         [Column("Ocena")]
         public byte Rating { get; set; }
         [Column("Komentarz")]

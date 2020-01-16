@@ -9,7 +9,7 @@ namespace PO_sklep.Models
     {
         [Key]
         [Column("Id_klienta")]
-        public int ClientId { get; set; }
+        public int Id { get; set; }
         [Column("Imie_klienta")]
         public string Name { get; set; }
         [Column("Nazwisko_klienta")]
@@ -24,8 +24,8 @@ namespace PO_sklep.Models
         [Column("Id_konta")]
         public int? AccountId { get; set; }
 
-        public Konto Account { get; set; }
+        public Account Account { get; set; }
         public IList<Review> Reviews { get; set; }
-        public IList<Zamowienie> Orders { get; set; }
+        public IList<Order> Orders { get; set; }
     }
 }

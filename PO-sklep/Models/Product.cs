@@ -1,5 +1,4 @@
 ﻿using Dapper.Contrib.Extensions;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,7 +8,7 @@ namespace PO_sklep.Models
     {
         [Key]
         [Column("Id_produktu")]
-        public int ProductId { get; set; }
+        public int Id { get; set; }
         [Column("Producent")]
         public string ProducerName { get; set; }
         [Column("Nazwa_produktu")]

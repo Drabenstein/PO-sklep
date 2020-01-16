@@ -24,7 +24,7 @@ namespace PO_sklep.Services.Implementations
 
         public async Task<int?> CreateOrderAsync(int clientId, OrderDto order)
         {
-            var orderItems = _mapper.Map<IEnumerable<ZamowienieProdukt>>(order.OrderItems);
+            var orderItems = _mapper.Map<IEnumerable<OrderItem>>(order.OrderItems);
             try
             {
                 return order.PaymentTypeId is { }
@@ -54,7 +54,7 @@ namespace PO_sklep.Services.Implementations
             var client = await _clientRepository.GetClientByEmail(clientEmail);
             int clientId = client is null
                 ? await _clientRepository.CreateClientAsync(clientEmail)
-                : client.ClientId;
+                : client.Id;
             return await CreateOrderAsync(clientId, order);
         }
     }

@@ -21,13 +21,13 @@ namespace PO_sklep.Mappings
                 .ForMember(x => x.Name, src => src.MapFrom(x => x.ProductName))
                 .ForMember(x => x.Price, src => src.MapFrom(x => Math.Round(x.NetPrice * (1.0m + (x.Vat / 100.0m)), 2)))
                 .ForMember(x => x.ProducerName, src => src.MapFrom(x => x.ProducerName))
-                .ForMember(x => x.ProductId, src => src.MapFrom(x => x.ProductId))
+                .ForMember(x => x.ProductId, src => src.MapFrom(x => x.Id))
                 .ForMember(x => x.Reviews, src => src.MapFrom(x => x.Reviews))
                 .ReverseMap();
 
-            CreateMap<ZamowienieProdukt, OrderItemDto>()
-                .ForMember(x => x.ProductId, src => src.MapFrom(x => x.IdProduktu))
-                .ForMember(x => x.Count, src => src.MapFrom(x => x.Ilosc))
+            CreateMap<OrderItem, OrderItemDto>()
+                .ForMember(x => x.ProductId, src => src.MapFrom(x => x.ProductId))
+                .ForMember(x => x.Count, src => src.MapFrom(x => x.Count))
                 .ReverseMap();
         }
     }
