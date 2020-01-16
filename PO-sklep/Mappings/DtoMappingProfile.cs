@@ -24,6 +24,11 @@ namespace PO_sklep.Mappings
                 .ForMember(x => x.ProductId, src => src.MapFrom(x => x.IdProduktu))
                 .ForMember(x => x.Reviews, src => src.MapFrom(x => x.Opinie))
                 .ReverseMap();
+
+            CreateMap<ZamowienieProdukt, OrderItemDto>()
+                .ForMember(x => x.ProductId, src => src.MapFrom(x => x.IdProduktu))
+                .ForMember(x => x.Count, src => src.MapFrom(x => x.Ilosc))
+                .ReverseMap();
         }
     }
 }

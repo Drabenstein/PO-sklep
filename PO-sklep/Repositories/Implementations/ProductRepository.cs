@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PO_sklep.Repositories.Implementations
 {
-    public class ProductRepository : GenericRepositoryBase<Produkt>
+    public class ProductRepository : GenericRepositoryBase<Produkt>, IProductRepository
     {
         private const string GetAllProductsUsp = "uspGetAllProducts";
         private const string GetProductsByCategoryUsp = "uspGetProductsByCategory";

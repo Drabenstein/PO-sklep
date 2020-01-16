@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PO_sklep.Helpers;
 using PO_sklep.Repositories.Implementations;
+using PO_sklep.Repositories.Interfaces;
 using PO_sklep.Services.Implementations;
 using PO_sklep.Services.Interfaces;
 
@@ -29,16 +30,18 @@ namespace PO_sklep
                                                     .AllowAnyHeader()
                                                     .AllowCredentials()));
 
-            //Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
             SqlMapperInitializer.InitializeColumnMappings();
 
             services.AddAutoMapper(typeof(Startup));
 
             services.AddSingleton(new ConnectionConfig(Configuration.GetConnectionString("PO-sklep-ef")));
 
-            services.AddScoped<ProductRepository, ProductRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
 
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IOrderService, OrderService>();
 
             services.AddControllers();
         }

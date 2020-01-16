@@ -1,31 +1,21 @@
 ﻿using AutoMapper;
 using PO_sklep.DTO;
 using PO_sklep.Extensions;
-using PO_sklep.Models;
 using PO_sklep.Repositories.Implementations;
 using PO_sklep.Repositories.Interfaces;
 using PO_sklep.Services.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace PO_sklep.Services.Implementations
 {
     public class ProductService : IProductService
     {
-        private readonly ProductRepository _productRepository;
+        private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
 
-        //public ProductService(IGenericRepository<Produkt> productRepository, IGenericRepository<Opinia> reviewRepository, IGenericRepository<Klient> clientRepository, IMapper mapper)
-        //{
-        //    _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
-        //    _reviewRepository = reviewRepository ?? throw new ArgumentNullException(nameof(reviewRepository));
-        //    _clientRepository = clientRepository ?? throw new ArgumentNullException(nameof(clientRepository));
-        //    _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-        //}
-
-        public ProductService(ProductRepository productRepository, IMapper mapper)
+        public ProductService(IProductRepository productRepository, IMapper mapper)
         {
             _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
