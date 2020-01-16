@@ -24,7 +24,6 @@ namespace PO_sklep.Repositories.Interfaces
 
             using var connection = CreateConnection();
             await query.Invoke(connection).ConfigureAwait(false);
-
         }
 
         protected async Task<T> QueryAsync<T>(Func<IDbConnection, Task<T>> query)

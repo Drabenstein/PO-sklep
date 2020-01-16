@@ -6,10 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="EF\POsklepContext.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Dapper.Contrib" Version="2.0.30" />
@@ -17,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="EF\" />
     <Folder Include="wwwroot\images\products\" />
   </ItemGroup>
 
