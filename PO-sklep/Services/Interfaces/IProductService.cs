@@ -8,7 +8,7 @@ namespace PO_sklep.Services.Interfaces
     {
         Task<IEnumerable<ProductDto>> GetAllProductsAsync();
         Task<ProductDto> GetProductByIdAsync(int id);
-        Task<IEnumerable<ProductDto>> GetProductsByCategoryId(int categoryId);
+        Task<IEnumerable<ProductDto>> GetProductsByCategoryIdAsync(int categoryId);
         Task<int?> AddReviewAsync(int productId, ReviewDto newReview);
     }
 }

@@ -20,14 +20,14 @@ namespace PO_sklep.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<ProductDto>> Get()
+        public async Task<IEnumerable<ProductDto>> GetAll()
         {
             return await _productService.GetAllProductsAsync();
         }
 
         [HttpGet]
         [ExactQueryParam("id")]
-        public async Task<ActionResult<ProductDto>> Get([FromQuery]int id)
+        public async Task<ActionResult<ProductDto>> GetById([FromQuery]int id)
         {
             var foundItem = await _productService.GetProductByIdAsync(id);
 
@@ -43,13 +43,18 @@ namespace PO_sklep.Controllers
         [ExactQueryParam("categoryId")]
         public async Task<IEnumerable<ProductDto>> GetByCategory([FromQuery]int categoryId)
         {
-            var foundProducts = await _productService.GetProductsByCategoryId(categoryId);
+            var foundProducts = await _productService.GetProductsByCategoryIdAsync(categoryId);
             return foundProducts;
         }
 
         [HttpPost("{id}/addReview")]
         public async Task<ActionResult> CreateReview(int id, [FromBody]ReviewDto review)
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
             var newReviewId = await _productService.AddReviewAsync(id, review);
 
             if (newReviewId is null)

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using PO_sklep.DTO;
 using PO_sklep.Extensions;
-using PO_sklep.Repositories.Implementations;
 using PO_sklep.Repositories.Interfaces;
 using PO_sklep.Services.Interfaces;
 using System;
@@ -46,7 +45,7 @@ namespace PO_sklep.Services.Implementations
             return _mapper.Map<ProductDto>(product).UpdateImageUrl();
         }
 
-        public async Task<IEnumerable<ProductDto>> GetProductsByCategoryId(int categoryId)
+        public async Task<IEnumerable<ProductDto>> GetProductsByCategoryIdAsync(int categoryId)
         {
             var products = await _productRepository.GetByCategoryIdAsync(categoryId).ConfigureAwait(false);
             return _mapper.Map<IEnumerable<ProductDto>>(products)?.UpdateImageUrls();
