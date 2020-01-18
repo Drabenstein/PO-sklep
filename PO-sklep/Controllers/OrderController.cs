@@ -19,9 +19,15 @@ namespace PO_sklep.Controllers
             _orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
         }
 
+        /// <summary>
+        /// Creates order by specified client asynchronously
+        /// </summary>
+        /// <param name="id">Client id</param>
+        /// <param name="order">Order details</param>
+        /// <returns>Ok with newly created order id or BadRequest</returns>
         [HttpPost("add")]
         [ExactQueryParam("id")]
-        public async Task<ActionResult> Create([FromQuery]int id, [FromBody]OrderDto order)
+        public async Task<ActionResult> CreateById([FromQuery]int id, [FromBody]OrderDto order)
         {
             if(!ModelState.IsValid)
             {
@@ -45,9 +51,15 @@ namespace PO_sklep.Controllers
             }
         }
 
+        /// <summary>
+        /// Creates order by specified client asynchronously
+        /// </summary>
+        /// <param name="email">Client email</param>
+        /// <param name="order">Order details</param>
+        /// <returns>Ok with newly created order id or BadRequest</returns>
         [HttpPost("add")]
         [ExactQueryParam("email")]
-        public async Task<ActionResult> Create([FromQuery]string email, [FromBody]OrderDto order)
+        public async Task<ActionResult> CreateByEmail([FromQuery]string email, [FromBody]OrderDto order)
         {
             if (!ModelState.IsValid)
             {

@@ -16,16 +16,43 @@ namespace PO_sklep.Repositories.Implementations
 
         public OrderRepository(ConnectionConfig connectionConfig) : base(connectionConfig) { }
 
+        /// <summary>
+        /// Creates order asynchronously
+        /// </summary>
+        /// <param name="clientId">Client's id</param>
+        /// <param name="deliveryMethodId">Order delivery method id</param>
+        /// <param name="orderItems">Order items</param>
+        /// <returns>Id of newly created order</returns>
+        /// <exception cref="ArgumentNullException">Thrown if order items is null</exception>
         public async Task<int> CreateOrderAsync(int clientId, int deliveryMethodId, IEnumerable<OrderItem> orderItems)
         {
+            if(orderItems is null)
+            {
+                throw new ArgumentNullException(nameof(orderItems));
+            }
+
             var param = CreateParameters(clientId, deliveryMethodId, null, orderItems);
-            return await CreateOrderHelperAsync(param);
+            return await CreateOrderHelperAsync(param).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Creates order asynchronously
+        /// </summary>
+        /// <param name="clientId">Client's id</param>
+        /// <param name="deliveryMethodId">Order delivery method id</param>
+        /// <param name="paymentTypeId">Payment type id</param>
+        /// <param name="orderItems">Order items</param>
+        /// <returns>Id of newly created order</returns>
+        /// <exception cref="ArgumentNullException">Thrown if order items is null</exception>
         public async Task<int> CreateOrderAsync(int clientId, int deliveryMethodId, int paymentTypeId, IEnumerable<OrderItem> orderItems)
         {
+            if (orderItems is null)
+            {
+                throw new ArgumentNullException(nameof(orderItems));
+            }
+
             var param = CreateParameters(clientId, deliveryMethodId, paymentTypeId, orderItems);
-            return await CreateOrderHelperAsync(param);
+            return await CreateOrderHelperAsync(param).ConfigureAwait(false);
         }
 
         private async Task<int> CreateOrderHelperAsync(DynamicParameters param)
@@ -36,9 +63,9 @@ namespace PO_sklep.Repositories.Implementations
                 {
                     var id = await db.QueryAsync<int>(SubmitOrderUsp,
                         param,
-                        commandType: CommandType.StoredProcedure);
+                        commandType: CommandType.StoredProcedure).ConfigureAwait(false);
                     return id.SingleOrDefault();
-                });
+                }).ConfigureAwait(false);
                 return id;
             }
             catch (Exception ex)

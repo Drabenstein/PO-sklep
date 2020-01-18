@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using Dapper.Contrib.Extensions;
 using PO_sklep.Models;
 using PO_sklep.Repositories.Interfaces;
 using System.Collections.Generic;
@@ -19,6 +18,10 @@ namespace PO_sklep.Repositories.Implementations
         {
         }
 
+        /// <summary>
+        /// Gets all products asynchronously
+        /// </summary>
+        /// <returns></returns>
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
             return await QueryAsync(async db =>
@@ -28,11 +31,16 @@ namespace PO_sklep.Repositories.Implementations
                 var products = await db.QueryAsync<Product, Review, Client, Product>(GetAllProductsUsp,
                     (product, review, client) => MapProductWithReviews(productDictionary, product, review, client),
                     splitOn: "Id_opinii, Id_klienta",
-                    commandType: System.Data.CommandType.StoredProcedure);
+                    commandType: System.Data.CommandType.StoredProcedure).ConfigureAwait(false);
                 return products.Distinct().ToList();
             }).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Get all products belonging to specified category id asynchronously
+        /// </summary>
+        /// <param name="categoryId">Product category id</param>
+        /// <returns></returns>
         public async Task<IEnumerable<Product>> GetByCategoryIdAsync(int categoryId)
         {
             return await QueryAsync(async db =>
@@ -50,6 +58,11 @@ namespace PO_sklep.Repositories.Implementations
             }).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Gets product by it's id asynchronously
+        /// </summary>
+        /// <param name="id">Product id</param>
+        /// <returns></returns>
         public async Task<Product> GetByIdAsync(int id)
         {
             return await QueryAsync(async db =>
@@ -67,7 +80,16 @@ namespace PO_sklep.Repositories.Implementations
             }).ConfigureAwait(false);
         }
 
-        public async Task<int> AddProductReviewAsync(int id, string authorEmail, int rating, string comment, bool? isBuyerReview)
+        /// <summary>
+        /// Adds product review asynchronously
+        /// </summary>
+        /// <param name="id">Product's id</param>
+        /// <param name="authorEmail">Review author's email</param>
+        /// <param name="rating">Product's rating</param>
+        /// <param name="comment">Review's comment</param>
+        /// <param name="isBuyerReview">Flag describing if review is verified (default: null)</param>
+        /// <returns>Id of newly created review</returns>
+        public async Task<int> AddProductReviewAsync(int id, string authorEmail, int rating, string comment, bool? isBuyerReview = null)
         {
             var param = new DynamicParameters();
             param.Add("@Id_produktu", id);
@@ -89,8 +111,8 @@ namespace PO_sklep.Repositories.Implementations
                 return await db.ExecuteScalarAsync<int>(AddReviewUsp,
                     param,
                     commandType: System.Data.CommandType.StoredProcedure
-                    );
-            });
+                    ).ConfigureAwait(false);
+            }).ConfigureAwait(false);
         }
 
         private Product MapProductWithReviews(IDictionary<int, Product> productDictionary, Product product, Review review, Client client)

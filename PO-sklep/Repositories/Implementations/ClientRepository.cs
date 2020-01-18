@@ -16,7 +16,18 @@ namespace PO_sklep.Repositories.Implementations
 
         public ClientRepository(ConnectionConfig connectionConfig) : base(connectionConfig) { }
 
-        public async Task<int> CreateClientAsync(string name, string surname, string email, string address, DateTime? birthday)
+        /// <summary>
+        /// Creates client with specified data asynchronously
+        /// </summary>
+        /// <param name="name">Name of client</param>
+        /// <param name="surname">Surname of client</param>
+        /// <param name="email">Email of client</param>
+        /// <param name="address">Delivery address of client</param>
+        /// <param name="dayOfBirth">Day of birth of client</param>
+        /// <returns>Id of newly created client</returns>
+        /// <exception cref="InvalidOperationException">Thrown if client cannot be created</exception>
+        /// <exception cref="ArgumentNullException">Thrown if name or surname is null or whitespace</exception>
+        public async Task<int> CreateClientAsync(string name, string surname, string email, string address, DateTime? dayOfBirth)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -42,9 +53,9 @@ namespace PO_sklep.Repositories.Implementations
                 param.Add("@Adres", address);
             }
 
-            if (birthday is { })
+            if (dayOfBirth is { })
             {
-                param.Add("@Data_urodzenia", birthday);
+                param.Add("@Data_urodzenia", dayOfBirth);
             }
 
             try
@@ -53,8 +64,8 @@ namespace PO_sklep.Repositories.Implementations
                     {
                         return await db.ExecuteScalarAsync<int>(AddClientUsp,
                             param,
-                            commandType: System.Data.CommandType.StoredProcedure);
-                    });
+                            commandType: System.Data.CommandType.StoredProcedure).ConfigureAwait(false);
+                    }).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -62,6 +73,13 @@ namespace PO_sklep.Repositories.Implementations
             }
         }
 
+        /// <summary>
+        /// Creates client with specified email asynchronously
+        /// </summary>
+        /// <param name="email">Email of client</param>
+        /// <returns>Id of newly created client</returns>
+        /// <exception cref="InvalidOperationException">Thrown if client cannot be created</exception>
+        /// <exception cref="ArgumentNullException">Thrown if email is null or whitespace</exception>
         public async Task<int> CreateClientAsync(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
@@ -78,8 +96,8 @@ namespace PO_sklep.Repositories.Implementations
                 {
                     return await db.ExecuteScalarAsync<int>(AddClientByEmailUsp,
                         param,
-                        commandType: System.Data.CommandType.StoredProcedure);
-                });
+                        commandType: System.Data.CommandType.StoredProcedure).ConfigureAwait(false);
+                }).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -87,6 +105,11 @@ namespace PO_sklep.Repositories.Implementations
             }
         }
 
+        /// <summary>
+        /// Gets client by specified email asynchronously
+        /// </summary>
+        /// <param name="email">Client's email</param>
+        /// <returns></returns>
         public async Task<Client> GetClientByEmail(string email)
         {
             if(string.IsNullOrWhiteSpace(email))
@@ -101,10 +124,15 @@ namespace PO_sklep.Repositories.Implementations
             {
                 return await db.QueryFirstOrDefaultAsync<Client>(GetClientByEmailUsp,
                     param,
-                    commandType: System.Data.CommandType.StoredProcedure);
-            });
+                    commandType: System.Data.CommandType.StoredProcedure).ConfigureAwait(false);
+            }).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Gets client by specified id asynchronously
+        /// </summary>
+        /// <param name="clientId">Client's id</param>
+        /// <returns></returns>
         public async Task<Client> GetClientById(int clientId)
         {
             var param = new DynamicParameters();
@@ -114,8 +142,8 @@ namespace PO_sklep.Repositories.Implementations
             {
                 return await db.QueryFirstOrDefaultAsync<Client>(GetClientByIdUsp,
                     param,
-                    commandType: System.Data.CommandType.StoredProcedure);
-            });
+                    commandType: System.Data.CommandType.StoredProcedure).ConfigureAwait(false);
+            }).ConfigureAwait(false);
         }
     }
 }
