@@ -4,6 +4,7 @@ using Moq;
 using PO_sklep.Controllers;
 using PO_sklep.DTO;
 using PO_sklep.Services.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
@@ -23,7 +24,7 @@ namespace PO_sklep.Tests.Unit.Controllers
             serviceMock.Setup(x => x.GetAllProductsAsync()).ReturnsAsync(productsDtos);
             var controller = new ProductController(serviceMock.Object);
 
-            var results = await controller.GetAll();
+            var results = await controller.GetAll().ConfigureAwait(false);
 
             results.Should().BeEquivalentTo(productsDtos);
         }
@@ -36,7 +37,7 @@ namespace PO_sklep.Tests.Unit.Controllers
             serviceMock.Setup(x => x.GetAllProductsAsync()).ReturnsAsync(expected);
             var controller = new ProductController(serviceMock.Object);
 
-            var results = await controller.GetAll();
+            var results = await controller.GetAll().ConfigureAwait(false);
 
             results.Should().HaveCount(0).And.BeEquivalentTo(expected);
         }
@@ -49,7 +50,7 @@ namespace PO_sklep.Tests.Unit.Controllers
             serviceMock.Setup(x => x.GetProductByIdAsync(It.IsAny<int>())).ReturnsAsync(expected);
             var controller = new ProductController(serviceMock.Object);
 
-            var result = await controller.GetById(10);
+            var result = await controller.GetById(10).ConfigureAwait(false);
 
             result.Value.Should().BeEquivalentTo(expected);
         }
@@ -63,7 +64,7 @@ namespace PO_sklep.Tests.Unit.Controllers
             serviceMock.Setup(x => x.GetProductByIdAsync(It.IsNotIn<int>(8))).ReturnsAsync((ProductDto)null);
             var controller = new ProductController(serviceMock.Object);
 
-            var result = await controller.GetById(8);
+            var result = await controller.GetById(8).ConfigureAwait(false);
 
             result.Value.Should().BeEquivalentTo(expected);
         }
@@ -75,7 +76,7 @@ namespace PO_sklep.Tests.Unit.Controllers
             serviceMock.Setup(x => x.GetProductByIdAsync(It.IsAny<int>())).ReturnsAsync((ProductDto)null);
             var controller = new ProductController(serviceMock.Object);
 
-            await controller.GetById(8);
+            await controller.GetById(8).ConfigureAwait(false);
 
             serviceMock.Verify(x => x.GetProductByIdAsync(It.Is<int>(x => x == 8)), Times.Once());
         }
@@ -87,7 +88,7 @@ namespace PO_sklep.Tests.Unit.Controllers
             serviceMock.Setup(x => x.GetProductByIdAsync(It.IsAny<int>())).ReturnsAsync((ProductDto)null);
             var controller = new ProductController(serviceMock.Object);
 
-            var result = await controller.GetById(8);
+            var result = await controller.GetById(8).ConfigureAwait(false);
 
             result.Result.Should().BeOfType<NotFoundResult>();
         }
@@ -105,7 +106,7 @@ namespace PO_sklep.Tests.Unit.Controllers
             serviceMock.Setup(x => x.GetProductsByCategoryIdAsync(It.IsNotIn(3))).ReturnsAsync(new List<ProductDto>());
             var controller = new ProductController(serviceMock.Object);
 
-            var result = await controller.GetByCategory(3);
+            var result = await controller.GetByCategory(3).ConfigureAwait(false);
 
             result.Should().BeEquivalentTo(expected);
         }
@@ -123,7 +124,7 @@ namespace PO_sklep.Tests.Unit.Controllers
             serviceMock.Setup(x => x.GetProductsByCategoryIdAsync(It.IsNotIn(3))).ReturnsAsync(new List<ProductDto>());
             var controller = new ProductController(serviceMock.Object);
 
-            var result = await controller.GetByCategory(4);
+            var result = await controller.GetByCategory(4).ConfigureAwait(false);
 
             result.Should().BeEmpty();
         }
@@ -136,7 +137,7 @@ namespace PO_sklep.Tests.Unit.Controllers
             var serviceMock = new Mock<IProductService>();
             var controller = new ProductController(serviceMock.Object);
 
-            await controller.CreateReview(id, review);
+            await controller.CreateReview(id, review).ConfigureAwait(false);
 
             serviceMock.Verify(x => x.AddReviewAsync(It.Is<int>(x => x == id), It.Is<ReviewDto>(x => x.Equals(review))));
         }
@@ -150,7 +151,7 @@ namespace PO_sklep.Tests.Unit.Controllers
             serviceMock.Setup(x => x.AddReviewAsync(It.IsAny<int>(), It.IsNotNull<ReviewDto>())).ReturnsAsync(1);
             var controller = new ProductController(serviceMock.Object);
 
-            var result = await controller.CreateReview(id, review);
+            var result = await controller.CreateReview(id, review).ConfigureAwait(false);
 
             result.Should().BeOfType<OkResult>();
         }
@@ -164,7 +165,7 @@ namespace PO_sklep.Tests.Unit.Controllers
             serviceMock.Setup(x => x.AddReviewAsync(It.IsAny<int>(), It.IsNotNull<ReviewDto>())).ReturnsAsync((int?)null);
             var controller = new ProductController(serviceMock.Object);
 
-            var result = await controller.CreateReview(id, review);
+            var result = await controller.CreateReview(id, review).ConfigureAwait(false);
 
             result.Should().BeOfType<BadRequestResult>();
         }
@@ -175,8 +176,24 @@ namespace PO_sklep.Tests.Unit.Controllers
             var id = 3;
             ReviewDto review = null;
             var controller = new ProductController(Mock.Of<IProductService>());
+            controller.ModelState.AddModelError("review", "Review is null");
 
-            var result = await controller.CreateReview(id, review);
+            var result = await controller.CreateReview(id, review).ConfigureAwait(false);
+
+            result.Should().BeOfType<BadRequestResult>();
+        }
+
+        [Fact]
+        public async Task CreateReview_ServicesThrowsException_ReturnsBadRequest()
+        {
+            var id = 3;
+            var review = new ReviewDto { Author = "test@test.com", Rating = 5 };
+            var serviceMock = new Mock<IProductService>();
+            serviceMock.Setup(x => x.AddReviewAsync(It.IsAny<int>(), It.IsNotNull<ReviewDto>()))
+                .ThrowsAsync(new Exception());
+            var controller = new ProductController(serviceMock.Object);
+
+            var result = await controller.CreateReview(id, review).ConfigureAwait(false);
 
             result.Should().BeOfType<BadRequestResult>();
         }
