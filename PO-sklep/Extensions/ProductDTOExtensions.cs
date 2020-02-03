@@ -7,6 +7,7 @@ namespace PO_sklep.Extensions
     public static class ProductDtoExtensions
     {
         private static string _productImagesPath => "https://localhost:5001/images/products";
+        private static string _productImageExtension => "png";
 
         public static IEnumerable<ProductDto> UpdateImageUrls(this IEnumerable<ProductDto> products)
         {
@@ -25,7 +26,12 @@ namespace PO_sklep.Extensions
 
         public static ProductDto UpdateImageUrl(this ProductDto product)
         {
-            product.ImageUrl = $"{_productImagesPath}/8.jpg";
+            if(product is null)
+            {
+                throw new ArgumentNullException(nameof(product));
+            }
+
+            product.ImageUrl = $"{_productImagesPath}/{product.ProductId}.{_productImageExtension}";
             return product;
         }
     }

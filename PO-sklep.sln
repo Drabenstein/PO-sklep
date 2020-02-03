@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PO-sklep", "PO-sklep\PO-sklep.csproj", "{C859AC83-065F-430C-B1A3-09A826B73DF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PO-sklep", "PO-sklep\PO-sklep.csproj", "{C859AC83-065F-430C-B1A3-09A826B73DF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PO-sklep.Tests.Unit", "PO-sklep.Tests.Unit\PO-sklep.Tests.Unit.csproj", "{BFBD6E09-9E45-4D62-BDDB-149D799C6487}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PO-sklep.Tests.Unit", "PO-sklep.Tests.Unit\PO-sklep.Tests.Unit.csproj", "{BFBD6E09-9E45-4D62-BDDB-149D799C6487}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,5 +27,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7A73C516-B7FA-4A12-9362-CA3939790914}
+	EndGlobalSection
+	GlobalSection(NDepend) = preSolution
+		Project = ".\PO-sklep.ndproj"
 	EndGlobalSection
 EndGlobal
